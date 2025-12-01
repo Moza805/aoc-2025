@@ -16,7 +16,6 @@ var moves: Tick[] = protocols
 
     let endsAt = diff % ticks;
 
-    const crossesZero = (diff <= 0 || diff >= 100) && startsAt !== 0;
     const zeroCrossCount = Math.abs(Math.floor(diff / ticks));
 
     if (endsAt < 0) {
@@ -25,8 +24,6 @@ var moves: Tick[] = protocols
 
     return [...agg, { startsAt, move, endsAt, zeroCrossCount }];
   }, []);
-
-console.log(moves);
 
 console.log(moves.filter((move) => move.endsAt === 0).length);
 console.log(
