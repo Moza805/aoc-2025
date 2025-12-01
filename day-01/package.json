@@ -1,0 +1,29 @@
+{
+  "name": "day-1",
+  "version": "2025.0.0",
+  "description": "",
+  "main": "out/index.js",
+  "scripts": {
+    "start": "node --watch out/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Moza805/aoc-2025.git"
+  },
+  "keywords": [
+    "adventofcode",
+    "aoc",
+    "advent-of-code"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Moza805/aoc-2025/issues"
+  },
+  "homepage": "https://github.com/Moza805/aoc-2025#readme",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
