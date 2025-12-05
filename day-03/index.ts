@@ -2,24 +2,45 @@ import { readFileSync } from "fs";
 
 const data = readFileSync("./input.txt", "utf-8");
 
-const validValues = ["9", "8", "7", "6", "5", "4", "3", "2", "1"];
-
 const banks = data.split(/\r\n/).map((bank) => bank.split(""));
 
-// returns an array of locations for each potential joltage 9-0 in that order
-const getJoltageLocations = (bank: string[]): number[][] => {
-  const joltageIndices = validValues.reduce((valueAgg, validValue) => {
-    const indices = bank.reduce(
-      (agg, joltage, index) => (joltage === validValue ? [...agg, index] : agg),
-      []
+const getLargestJoltageForGivenCellCount = (
+  bank: number[],
+  requiredCellCount: number,
+  searchFor = 9
+) => {
+  const bankSize = bank.length;
+
+  if (bankSize <= 0 || searchFor <= 0) {
+    return `${searchFor}--`;
+  }
+
+  const cellIndex = bank.indexOf(searchFor);
+  const found = cellIndex > -1;
+  const enoughRemainingCells = bankSize - cellIndex >= requiredCellCount;
+
+  if (requiredCellCount === 1 && found) {
+    return searchFor.toString();
+  }
+
+  if (found && enoughRemainingCells) {
+    return (
+      searchFor.toString() +
+      getLargestJoltageForGivenCellCount(
+        bank.slice(cellIndex + 1),
+        requiredCellCount - 1,
+        9
+      )
     );
+  }
 
-    valueAgg.push(indices);
-
-    return valueAgg;
-  }, []);
-
-  return joltageIndices;
+  if ((!found && enoughRemainingCells) || (found && !enoughRemainingCells)) {
+    return getLargestJoltageForGivenCellCount(
+      bank,
+      requiredCellCount,
+      searchFor - 1
+    );
+  }
 };
 
 const getLargestJoltagePotential = (
@@ -62,13 +83,26 @@ const getLargestJoltagePotential = (
 };
 
 console.log(
-  banks.reduce((agg, bank) => {
-    const joltageLocations = getJoltageLocations(bank);
-    const largestJoltage = +getLargestJoltagePotential(
-      joltageLocations,
-      bank.length
-    );
+  banks.reduce(
+    (agg, bank) =>
+      agg +
+      +getLargestJoltageForGivenCellCount(
+        bank.map((x) => +x),
+        2
+      ),
+    0
+  )
+);
 
-    return agg + largestJoltage;
-  }, 0)
+
+console.log(
+  banks.reduce(
+    (agg, bank) =>
+      agg +
+      +getLargestJoltageForGivenCellCount(
+        bank.map((x) => +x),
+        12
+      ),
+    0
+  )
 );
